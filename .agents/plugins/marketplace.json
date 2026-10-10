@@ -1,0 +1,19 @@
+{
+  "name": "backlinkgpt-skills",
+  "interface": {
+    "displayName": "BacklinkGPT"
+  },
+  "plugins": [
+    {
+      "name": "backlinkgpt",
+      "source": "./plugins/backlinkgpt",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "description": "Connect BacklinkGPT to your agent: OAuth MCP server for prospect memory, SEO data, scheduled sending and reply detection, plus six link-building skills: setup, finding link targets, judging pages, writing pitches, handling replies and negotiating, and the weekly report.",
+      "version": "0.1.0"
+    }
+  ]
+}

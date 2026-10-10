@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "backlinkgpt": {
+      "type": "http",
+      "url": "https://backlinkgpt.com/api/mcp"
+    }
+  }
+}

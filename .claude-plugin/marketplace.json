@@ -1,0 +1,36 @@
+{
+  "name": "backlinkgpt-skills",
+  "owner": {
+    "name": "FMD Labs",
+    "url": "https://backlinkgpt.com"
+  },
+  "metadata": {
+    "description": "Official BacklinkGPT plugin for coding agents: connect the BacklinkGPT MCP server and get the link-building skills your agent runs on it.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "backlinkgpt",
+      "source": "./plugins/backlinkgpt",
+      "description": "Connect BacklinkGPT to your agent: OAuth MCP server for prospect memory, SEO data, scheduled sending and reply detection, plus six link-building skills: setup, finding link targets, judging pages, writing pitches, handling replies and negotiating, and the weekly report.",
+      "version": "0.1.0",
+      "author": {
+        "name": "FMD Labs",
+        "url": "https://backlinkgpt.com"
+      },
+      "homepage": "https://backlinkgpt.com/docs/mcp-server",
+      "repository": "https://github.com/fmd-labs/backlinkgpt-skills",
+      "license": "MIT",
+      "category": "productivity",
+      "keywords": [
+        "backlinkgpt",
+        "mcp",
+        "link-building",
+        "backlinks",
+        "seo",
+        "outreach",
+        "search-console"
+      ]
+    }
+  ]
+}
