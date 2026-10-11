@@ -119,7 +119,7 @@ Once it's live, send me the URL and the invoice, and the payment follows.
 Jane
 ```
 
-Then `set_deal_stage` agreed. "The payment follows" names no date.
+Then note the deal as agreed in the routine's state. "The payment follows" names no date.
 
 ### Invoice before the link is live (small site)
 

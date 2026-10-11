@@ -1,7 +1,7 @@
 {
   "name": "backlinkgpt",
   "version": "0.1.0",
-  "description": "Connect BacklinkGPT to your agent: OAuth MCP server for prospect memory, SEO data, scheduled sending and reply detection, plus six link-building skills: setup, finding link targets, judging pages, writing pitches, handling replies and negotiating, and the weekly report.",
+  "description": "Connect BacklinkGPT to your agent: OAuth MCP server for prospect memory, SEO data, sending and reply detection, and the autopilot stages your agent can take over, plus six link-building skills: setup, finding link targets, judging pages, writing pitches, handling replies and negotiating, and the weekly report.",
   "author": {
     "name": "FMD Labs",
     "url": "https://backlinkgpt.com"

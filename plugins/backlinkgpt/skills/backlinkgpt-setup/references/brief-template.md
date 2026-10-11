@@ -8,7 +8,8 @@ Copy the block below into the place the routine reads (a file in the project, Ch
 # Link building brief: <site>
 
 ## Site
-- Workspace: <site domain> (BacklinkGPT, scheduled sending <on|off>, data credits <yes|no>)
+- Workspace: <site domain> (BacklinkGPT, sending <active|off>, credits <yes|no>)
+- Stages the agent does (off in BacklinkGPT): <find sites | judge pages | write outreach | suggest replies>; BacklinkGPT does the rest
 - What it is: <one or two sentences, as written with update_site_positioning>
 - What it is not: <the categories outreach must stay away from>
 - Audience: <who buys or uses it>
@@ -46,7 +47,7 @@ Measured habits: median length <n> words, opens with <...>, ends with <...>, nev
 
 ## Limits
 - New conversations per working day: <e.g. 10>
-- Credit budget per daily run: <e.g. 40>; per week: <e.g. 200> (only with data credits)
+- Credit budget per daily run: <e.g. 40>; per week: <e.g. 200>
 - Follow-ups per cold thread: <1 or 2>
 - Minimum domain rating for prospects (optional): <e.g. none, or 10>
 

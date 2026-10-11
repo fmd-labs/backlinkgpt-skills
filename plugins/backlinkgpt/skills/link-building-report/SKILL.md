@@ -1,6 +1,6 @@
 ---
 name: link-building-report
-description: Write a weekly (or monthly) link-building report from BacklinkGPT data. Use when the user asks "how is link building going", "weekly report", "what did we win", "did our backlinks help rankings", "reply rate this month", or as the Monday job of a link-building routine. Pulls get_outreach_kpis, list_won_backlinks, check_backlink_live, deal and reply status, and Search Console and Bing movement for target pages (get_link_impact, list_search_console_pages, list_search_console_queries, list_bing_pages), then compares sources and sets next week's plan.
+description: Write a weekly (or monthly) link-building report from BacklinkGPT data. Use when the user asks "how is link building going", "weekly report", "what did we win", "did our backlinks help rankings", "reply rate this month", or as the Monday job of a link-building routine. Pulls get_agent_status, get_outreach_kpis, get_source_breakdown, list_won_backlinks, check_backlink_live, deal and reply status, and Search Console and Bing movement for target pages when the user has it, then compares sources and sets next week's plan. Covers what BacklinkGPT's autopilot did and what the agent did, by stage.
 ---
 
 # Link-building report
@@ -11,17 +11,17 @@ Default window: the last 7 days against the 7 before. Monthly: the last 28 days 
 
 ## 1. Gather
 
-Reading your own data, Search Console and Bing costs no credits.
+Reading your own data costs no credits.
 
-- `get_workspace_status`: scheduled sending, data credits left this period (if the workspace has them), senders, connections.
+- `get_agent_status`: the autopilot stages (who did what this week), sending, credits left this period, the prospect pool, links won.
 - `get_outreach_kpis` twice, once per window: messages sent, prospects contacted, replies, reply rate, bounces, engagements started, links won. LinkedIn adds invites sent and accepted; quote the accept rate as given.
 - `list_won_backlinks`: links won in the window, plus all live links for the totals (DR, dofollow share, target page, price where recorded).
 - `check_backlink_live` on links won in the window and on links not checked in the last 30 days. Report each as live, lost, or unreachable. Unreachable means the page could not be read (blocked); it is not a lost link.
-- `list_replies_waiting`: anything still unanswered, with how long it has waited.
+- `get_source_breakdown`: which sourcing channels BacklinkGPT's own hunt kept, contacted and won from.
+- `list_inbox` with the `inbox` view: anything still unanswered, with how long it has waited.
 - Deals: the threads that moved this week and their stage (negotiating, agreed, invoice received, paid, awaiting placement, live), from the routine's notes and `get_conversation_thread`.
-- With scheduled sending: `list_engagements` for live sequences, and `get_outreach_history` for what went out.
-- Search Console: `get_link_impact` for target pages that won links (before and after clicks, impressions, position); `list_search_console_pages` filtered to the target pages for both windows; `list_search_console_queries` for each target page's top queries.
-- Bing: `get_bing_overview` and `list_bing_pages` for the same pages.
+- With sending active: `list_engagements` for live sequences, and `get_outreach_history` for what went out.
+- Search Console and Bing, when your tool list has tools for them or the user shares an export: clicks, impressions and average position for the target pages in both windows, and their top queries. Without either, leave the Search section out and say why.
 - The brief's state: which source each prospect came from, credits spent per run.
 
 ## 2. Read the numbers honestly
@@ -40,7 +40,7 @@ Group the prospects contacted in the last 30 days by their source (`ai_citation`
 ```markdown
 # Link building, <site>: week of <date>
 
-**Won**: <n> links (<n> dofollow), <n> live in total. **Replies**: <n> (<rate>% of <n> contacted, <up/down> from <rate>%). **Credits** (only with data credits): <used>, <left> left.
+**Won**: <n> links (<n> dofollow), <n> live in total. **Replies**: <n> (<rate>% of <n> contacted, <up/down> from <rate>%). **Credits**: <used>, <left> left.
 
 ## Wins
 | Page | DR | Target page | Dofollow | Price |

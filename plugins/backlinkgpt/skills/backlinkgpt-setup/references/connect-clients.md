@@ -9,7 +9,7 @@ Two credentials work:
 
 The same key works for the REST API at `https://backlinkgpt.com/api/v1` (`x-api-key` header, reference at https://backlinkgpt.com/api/v1/docs).
 
-After connecting, call `get_workspace_status`. If it answers, the connection works.
+After connecting, call `get_agent_status`. If it answers, the connection works.
 
 ## Claude (web and desktop)
 
@@ -76,7 +76,7 @@ Skills: `npx skills add fmd-labs/backlinkgpt-skills -a codex`.
 
 ## Hermes and other self-hosted agents
 
-Use an API key. Add an HTTP MCP server named `backlinkgpt` with the MCP URL and the header `Authorization: Bearer <key>` in the agent's MCP config (Hermes: the `mcp_servers` section of its config). Load the key from the agent's secret store. Copy the skill folders into the agent's skills directory. Restart the agent so it picks up the server, then call `get_workspace_status`.
+Use an API key. Add an HTTP MCP server named `backlinkgpt` with the MCP URL and the header `Authorization: Bearer <key>` in the agent's MCP config (Hermes: the `mcp_servers` section of its config). Load the key from the agent's secret store. Copy the skill folders into the agent's skills directory. Restart the agent so it picks up the server, then call `get_agent_status`.
 
 ## Cursor, VS Code, others
 
