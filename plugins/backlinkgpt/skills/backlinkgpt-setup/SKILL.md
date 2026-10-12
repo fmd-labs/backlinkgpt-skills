@@ -9,7 +9,7 @@ BacklinkGPT runs link building in four autopilot stages, each on by default (`ge
 
 Every BacklinkGPT skill does only the stages that are off, or what the user asked for by name. Never switch a stage yourself without the user's word (`set_autopilot_stages`).
 
-Labels used in all BacklinkGPT skills: **(credits)** is a metered tool that spends the workspace's credits, **(sending)** needs sending to be active for the workspace (`get_agent_status`: `credits.subscriptionStatus` is `active`). A workspace without credits left refuses the credit tools, and one that cannot send refuses the sending tools: then you take your own tools or the manual path (below). Everything else is free: memory, contact policies, `check_draft`, logging, events. A tool these skills name that is not in your tool list: use your own equivalent and say so in the summary.
+Labels used in all BacklinkGPT skills: **(credits)** is a metered tool that spends the workspace's credits, **(sending)** needs a connected sender (`list_senders`: a Gmail, Outlook or IMAP inbox, or a LinkedIn account, connected in the app). A workspace without credits left refuses the credit tools, and one without a working sender refuses the sending tools: then you take your own tools or the manual path (below). Everything else is free: memory, contact policies, `check_draft`, logging, events. Every tool needs the workspace to have an active plan; without one each call is refused and nothing is charged. A tool these skills name that is not in your tool list: use your own equivalent and say so in the summary.
 
 **Without credits** the workflow stays the same, only the source of the numbers changes. Read pages with your own web fetch, search with your own web search, and take backlinks, link gaps, traffic and domain rating from an SEO data source the user already has (an Ahrefs or Semrush MCP server, open-seo, an export). Save everything into BacklinkGPT memory as usual. Never invent a number you could not read: an unmeasured site is scored as unmeasured.
 
@@ -21,9 +21,9 @@ Call `get_agent_status`. If the BacklinkGPT tools are missing, connect first: se
 
 - MCP URL: `https://backlinkgpt.com/api/mcp`. OAuth by default. One connection is bound to one workspace, and one workspace is one site.
 - Headless agents (scheduled jobs, Hermes, CI) use an API key from https://backlinkgpt.com/app/api/keys as `Authorization: Bearer <key>` or `x-api-key`. Owners and admins create keys. Store the key in the runtime's secret store, never in a prompt, file in a repo, or chat.
-- No account yet: the user signs up at https://backlinkgpt.com and creates the workspace for their site in the app. You do not create accounts for them.
+- No account yet, or no browser on your side: follow https://backlinkgpt.com/auth.md. With the user's OK you register with their email and get a link and a 6-digit code; the user opens the link, signs in or creates the account, enters the code and picks the workspace (or creates it by typing the site's domain), and you receive a token for the MCP server. That token lasts 60 minutes with no refresh (exchange the identity assertion for a new one) and the assertion 30 days (then the user claims again), so a scheduled routine switches to an API key once the workspace is set up. Finishing the workspace's setup and connecting an inbox stay with the user, in the app; a new workspace answers the tools only once its setup is finished.
 
-Read the status back to the user in two lines: which autopilot stages are on (`stages`), whether sending is active, credits left, senders (`list_senders`), send window.
+Read the status back to the user in two lines: which autopilot stages are on (`stages`), credits left, senders and their state (`list_senders`), send window.
 
 ## 2. Who does what
 
@@ -96,8 +96,10 @@ Store it where the routine will find it: a file in the project for Claude Code o
 
 ## 10. Sending
 
-- **With sending active**: check `list_senders`. Senders (Gmail, Outlook or IMAP inboxes, and LinkedIn accounts) are connected in the app at https://backlinkgpt.com/app/connected-accounts. Read `get_cadence_policy` and set the send window and daily caps with `update_cadence_policy`. A new or rarely used mailbox ramps up: see `set_sender_warmup`.
-- **Without it**: BacklinkGPT does not send. The routine drafts, the user (or your mail connector, with their yes) sends from their own mailbox, and you log each message with `record_manual_touch`.
+Check `list_senders`. Senders (Gmail, Outlook or IMAP inboxes, and LinkedIn accounts) are connected by the user in the app at https://backlinkgpt.com/app/connected-accounts.
+
+- **With a sender connected**: read `get_cadence_policy` and set the send window and daily caps with `update_cadence_policy`. A new or rarely used mailbox ramps up: see `set_sender_warmup`.
+- **No sender connected**: BacklinkGPT cannot send. The routine drafts, the user (or your mail connector, with their yes) sends from their own mailbox, and you log each message with `record_manual_touch`. Connecting a sender later switches the routine to queueing.
 
 ## 11. Events
 
@@ -135,7 +137,7 @@ Before anything runs unattended:
 
 ## Done when
 
-- [ ] `get_agent_status` shows the right site, sending, credits and senders as expected
+- [ ] `get_agent_status` shows the right site, credits and stages, and `list_senders` the expected senders
 - [ ] The stages the agent takes over are switched off, and the brief says which they are
 - [ ] Search Console and Bing connected, or the user chose not to
 - [ ] Site profile written and confirmed
@@ -143,7 +145,7 @@ Before anything runs unattended:
 - [ ] Competitors classified, exclusions added
 - [ ] Deal profile filled, or the user knows it is empty
 - [ ] Brief written and stored where the routine reads it
-- [ ] Sender and caps set (with sending active), or the manual send-and-log path explained (without it)
+- [ ] Sender and caps set (with a sender connected), or the manual send-and-log path explained (without one)
 - [ ] Events: cursor saved or webhook subscribed
 - [ ] Daily run, reply checks and weekly report scheduled
 - [ ] First batch reviewed by the user

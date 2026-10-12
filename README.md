@@ -6,7 +6,7 @@ BacklinkGPT runs link building in four autopilot stages: **find sites**, **judge
 
 - **Memory.** Every prospect, verdict, contact, message and deal, so nothing is pitched twice.
 - **SEO data tools.** Domain rating and traffic, competitor link intersection, SERP reads, page reads, email finding and verification. Metered in credits. Without credits your agent brings its own SEO data, and the skills tell it how.
-- **Search Console and Bing.** Query and page data for your site, and the movement on pages that won links.
+- **Search Console and Bing.** Connected in the app, they steer BacklinkGPT's own target pages and sourcing. They are not agent tools yet: your agent works from an export the user shares, or its own Search Console connection.
 - **Sending with safety rails.** Your agent queues a first message and its follow-up steps; BacklinkGPT sends each one as written from your Gmail, Outlook or IMAP inbox inside your send window, with caps, pacing, suppression lists and dead-page checks.
 - **Draft checks.** `check_draft` runs your agent's copy through the checks the send queue applies, before anything is queued. Free.
 - **Reply detection.** Any human reply stops the sequence and fires an event.
@@ -18,16 +18,16 @@ For the stages your agent takes over, the quality of the pitches and the deals i
 
 | Skill | What it does |
 | --- | --- |
-| [`backlinkgpt-setup`](plugins/backlinkgpt/skills/backlinkgpt-setup/SKILL.md) | "Set me up": connect the MCP server, Search Console and Bing, target pages, competitors, exclusions, profiles, and the routine. |
+| [`backlinkgpt-setup`](plugins/backlinkgpt/skills/backlinkgpt-setup/SKILL.md) | "Set me up": connect the MCP server, Search Console and Bing (in the app), target pages, competitors, exclusions, profiles, and the routine. |
 | [`find-link-targets`](plugins/backlinkgpt/skills/find-link-targets/SKILL.md) | Sourcing: AI-citation sources, competitor link intersection, "best X" roundups, resource pages, unlinked mentions. Dedupe and save. |
 | [`judge-link-targets`](plugins/backlinkgpt/skills/judge-link-targets/SKILL.md) | The page verdict rubric (gates, spam, language, duplicates, value x win odds) and contact choice. |
 | [`write-link-pitch`](plugins/backlinkgpt/skills/write-link-pitch/SKILL.md) | Research-led first message and follow-ups, claim and style checks, `check_draft`, then queue or send. |
 | [`handle-link-replies`](plugins/backlinkgpt/skills/handle-link-replies/SKILL.md) | Same-day replies, the fair price table and money rules, deal stages, verifying the live link. |
-| [`link-building-report`](plugins/backlinkgpt/skills/link-building-report/SKILL.md) | Weekly report: outreach KPIs, won and lost links, deals, Search Console and Bing movement on target pages. |
+| [`link-building-report`](plugins/backlinkgpt/skills/link-building-report/SKILL.md) | Weekly report: outreach KPIs, won and lost links, deals, and Search Console and Bing movement on target pages when the user shares the numbers. |
 
 Workspaces on a paid plan also get deeper playbooks served by the MCP server itself (`list_skills`, `get_skill`): AI-citation sourcing, a competitor gap deep dive, link negotiation and an end-to-end outreach routine. They are always the latest version.
 
-The MCP server lives at `https://backlinkgpt.com/api/mcp` (streamable HTTP, OAuth or API key). You need a BacklinkGPT account with a workspace for your site: sign up at [backlinkgpt.com](https://backlinkgpt.com).
+The MCP server lives at `https://backlinkgpt.com/api/mcp` (streamable HTTP, OAuth or API key). You need a BacklinkGPT account with a workspace for your site on an active plan: sign up at [backlinkgpt.com](https://backlinkgpt.com), or let a headless agent sign you up through [auth.md](https://backlinkgpt.com/auth.md) (below).
 
 ## Install
 
@@ -114,7 +114,10 @@ Or add to `.vscode/mcp.json`:
 
 ### Hermes and other headless agents
 
-Use a workspace API key instead of OAuth. Owners and admins create keys at [backlinkgpt.com/app/api/keys](https://backlinkgpt.com/app/api/keys). Send it as `Authorization: Bearer <key>` or `x-api-key: <key>` to the MCP URL, or call the REST API directly. Copy the skill folders from `plugins/backlinkgpt/skills/` into the agent's skills directory. Keep the key in the agent's secret store, never in a prompt or a repo.
+- **A workspace API key** is the credential for an agent that runs on a schedule: it keeps working until you pause or delete it (or until the expiry date you gave it). Owners and admins create keys at [backlinkgpt.com/app/api/keys](https://backlinkgpt.com/app/api/keys). Send it as `Authorization: Bearer <key>` or `x-api-key: <key>` to the MCP URL, or call the REST API directly. Keep the key in the agent's secret store, never in a prompt or a repo.
+- **auth.md** signs the user up, or reaches a workspace, without a browser on the agent's side (no account or key needed yet): point the agent at `https://backlinkgpt.com/auth.md`. It registers with the user's email and shows them a link and a 6-digit code; the user signs in (or creates the account), enters the code and picks or creates the workspace, and the agent receives its own token for the MCP server. That token lasts 60 minutes with no refresh token (the agent exchanges its identity assertion for a new one), and the assertion expires after 30 days (then the user claims again), so it does not belong in a static config header: once the workspace is set up, switch the routine to an API key. The connection shows up under Settings, Security, MCP Clients and is revoked there.
+
+Then copy the skill folders from `plugins/backlinkgpt/skills/` into the agent's skills directory.
 
 ### Any other MCP client
 
@@ -128,6 +131,7 @@ Point the client at `https://backlinkgpt.com/api/mcp` with streamable HTTP and O
 | REST API | `https://backlinkgpt.com/api/v1` (`x-api-key` header) |
 | API reference | https://backlinkgpt.com/api/v1/docs |
 | API keys | https://backlinkgpt.com/app/api/keys |
+| Agent sign-up (auth.md) | https://backlinkgpt.com/auth.md |
 | Webhooks | https://backlinkgpt.com/app/api/webhooks |
 | Search Console, Bing | https://backlinkgpt.com/app/connected-accounts |
 
@@ -135,27 +139,30 @@ One connection or key is bound to one workspace. One workspace is one site.
 
 ## Plans and credits
 
-Memory, contact policies, Search Console and Bing, the MCP server and REST API over your own data, events, webhooks, `check_draft`, logging messages you sent elsewhere (`record_manual_touch`) and the public skills come with every workspace. Sending, the SEO data tools and the premium skills come with a paid plan; plans and prices are at [backlinkgpt.com/pricing](https://backlinkgpt.com/pricing).
+Every MCP and REST call needs a workspace with an active plan, whatever the credential: without one the MCP tools answer `FORBIDDEN` and the REST API `402`, and nothing is charged. The MCP server and the REST API are on every plan, and so are memory, contact policies, events, webhooks, `check_draft`, logging messages you sent elsewhere (`record_manual_touch`), the SEO data tools (metered in credits) and the premium skills. BacklinkGPT sends once a sender (Gmail, Outlook, IMAP or LinkedIn) is connected in the app; without one, your agent drafts and the user sends. Search Console and Bing are connected in the app and used by BacklinkGPT itself; they are not agent tools yet. The public skills are free to read and install. Plans and prices are at [backlinkgpt.com/pricing](https://backlinkgpt.com/pricing).
 
-Only calls that cost BacklinkGPT money at a data provider use credits:
+These tools use credits:
 
 | Tool | Credits |
 | --- | --- |
-| `get_seo_metrics` | 2 per domain or URL; free when a reading under 30 days old exists |
+| `get_seo_metrics` | 2 per read; free for a bare domain this workspace already measured in the last 30 days (unless `fresh: true`); a URL with a path always costs 2 |
 | `search_serp` | 1 per results page |
 | `read_page` | 1 per page |
 | `find_link_intersection` | 25 per 1,000 rows, rounded up |
 | `find_contacts` | the hunt on the site's own pages is free; 1 per person the people search returns |
 | `verify_email` | 1 per address |
 | `import_prospects`, `research_prospect` | per page BacklinkGPT reads (and judges) |
+| `scan_competitor_gap` | 25 per 1,000 pages the scan returns (nothing if it finds none), plus up to 3 per page it evaluates; the quote, 100 by default, is the most it can cost |
+| `trigger_sourcing_run` | what the run's search reads and page verdicts cost (admins only) |
 
-Reading and writing your own data, `check_draft`, Search Console and Bing, events and sending are not metered. On MCP a credit tool first returns a quote and spends nothing; the agent calls it again with `confirm: true`. Without credits the data tools are refused and nothing is charged: the skills fall back to your agent's own web search, page fetch and SEO data (an Ahrefs or Semrush MCP server, open-seo, an export).
+Reading and writing your own data, `check_draft`, events and sending are not metered. On MCP a credit tool first returns a quote and spends nothing; the agent calls it again with `confirm: true`. Without credits the data tools are refused and nothing is charged: the skills fall back to your agent's own web search, page fetch and SEO data (an Ahrefs or Semrush MCP server, open-seo, an export).
 
 ## Auth and security
 
 - OAuth is the default. During consent you pick one workspace, and the grant stays bound to it. Review or revoke authorized clients at [backlinkgpt.com/app/settings/security](https://backlinkgpt.com/app/settings/security).
 - API keys are for agents that run unattended or must switch between workspaces (one key per workspace). Pause or delete a key when an agent retires.
-- This repository contains no secrets and never will. It only ships public configuration pointing at the BacklinkGPT endpoint; credentials are issued at runtime, through OAuth in your own browser or as a key you create in the app.
+- An agent that signed up through auth.md holds a token bound to the one workspace the user picked; the user sees and revokes it under Settings, Security, MCP Clients.
+- This repository contains no secrets and never will. It only ships public configuration pointing at the BacklinkGPT endpoint; credentials are issued at runtime, through OAuth in your own browser, through auth.md (you confirm with a code in your own browser), or as a key you create in the app.
 - Anything your agent queues counts as approved. The queueing tools are marked destructive, so Claude and ChatGPT ask you before they run. In an unattended routine, the limits you wrote in the setup brief are the approval.
 - Caps, pacing, the send window, do-not-contact lists and dead-page checks apply to every send, whatever the agent asked for. A human reply stops the sequence.
 - Tools that spend credits quote their cost first and only run when called again with `confirm: true`.

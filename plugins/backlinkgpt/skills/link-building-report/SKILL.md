@@ -13,14 +13,14 @@ Default window: the last 7 days against the 7 before. Monthly: the last 28 days 
 
 Reading your own data costs no credits.
 
-- `get_agent_status`: the autopilot stages (who did what this week), sending, credits left this period, the prospect pool, links won.
+- `get_agent_status`: the autopilot stages (who did what this week), credits left this period, the prospect pool, links won.
 - `get_outreach_kpis` twice, once per window: messages sent, prospects contacted, replies, reply rate, bounces, engagements started, links won. LinkedIn adds invites sent and accepted; quote the accept rate as given.
 - `list_won_backlinks`: links won in the window, plus all live links for the totals (DR, dofollow share, target page, price where recorded).
 - `check_backlink_live` on links won in the window and on links not checked in the last 30 days. Report each as live, lost, or unreachable. Unreachable means the page could not be read (blocked); it is not a lost link.
 - `get_source_breakdown`: which sourcing channels BacklinkGPT's own hunt kept, contacted and won from.
 - `list_inbox` with the `inbox` view: anything still unanswered, with how long it has waited.
 - Deals: the threads that moved this week and their stage (negotiating, agreed, invoice received, paid, awaiting placement, live), from the routine's notes and `get_conversation_thread`.
-- With sending active: `list_engagements` for live sequences, and `get_outreach_history` for what went out.
+- With a sender connected: `list_engagements` for live sequences, and `get_outreach_history` for what went out.
 - Search Console and Bing, when your tool list has tools for them or the user shares an export: clicks, impressions and average position for the target pages in both windows, and their top queries. Without either, leave the Search section out and say why.
 - The brief's state: which source each prospect came from, credits spent per run.
 

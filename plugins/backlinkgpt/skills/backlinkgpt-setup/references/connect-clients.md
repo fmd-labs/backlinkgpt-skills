@@ -2,10 +2,13 @@
 
 MCP URL: `https://backlinkgpt.com/api/mcp` (streamable HTTP).
 
-Two credentials work:
+Three ways to connect:
 
 - **OAuth** (default). The user signs in, picks the workspace on the consent screen, and approves. No key is pasted anywhere. Dynamic client registration is supported, so client ID and secret stay empty.
+- **auth.md** (to sign the user up, or reach a workspace, without a browser on your side). Follow https://backlinkgpt.com/auth.md: you register with the user's email, the user opens the link you show, signs in or creates the account, enters your 6-digit code and picks or creates the workspace, and you receive a token for the MCP server. Its access token lasts 60 minutes and there is no refresh token: exchange the identity assertion auth.md returns for a fresh one. The assertion itself expires after 30 days, and then the user claims the connection again with a new code. For anything that runs on a schedule, switch to an API key once the workspace is set up.
 - **API key**. For agents that run unattended or must switch between several workspaces (one key per workspace). Owners and admins create keys at https://backlinkgpt.com/app/api/keys. Send it as `Authorization: Bearer <key>` or `x-api-key: <key>`. The key acts as the member who created it.
+
+Whichever you use, the workspace needs an active plan before the tools answer.
 
 The same key works for the REST API at `https://backlinkgpt.com/api/v1` (`x-api-key` header, reference at https://backlinkgpt.com/api/v1/docs).
 
@@ -76,7 +79,7 @@ Skills: `npx skills add fmd-labs/backlinkgpt-skills -a codex`.
 
 ## Hermes and other self-hosted agents
 
-Use an API key. Add an HTTP MCP server named `backlinkgpt` with the MCP URL and the header `Authorization: Bearer <key>` in the agent's MCP config (Hermes: the `mcp_servers` section of its config). Load the key from the agent's secret store. Copy the skill folders into the agent's skills directory. Restart the agent so it picks up the server, then call `get_agent_status`.
+Use an API key: it keeps working until the user pauses or deletes it (or until the expiry date they gave it), which is what a scheduled agent needs. Add an HTTP MCP server named `backlinkgpt` with the MCP URL and the header `Authorization: Bearer <key>` in the agent's MCP config (Hermes: the `mcp_servers` section of its config). When the user has no account yet (or cannot create a key), sign in through https://backlinkgpt.com/auth.md first: give the user the link and the 6-digit code, and keep the identity assertion in the agent's secret store. An auth.md token does not belong in a static header: it lasts 60 minutes with no refresh, so exchange the assertion for a fresh token before each run, and the assertion expires after 30 days (then the user claims again). Once the workspace is set up, ask the user for an API key and switch to it. Load the credential from the agent's secret store. Copy the skill folders into the agent's skills directory. Restart the agent so it picks up the server, then call `get_agent_status`.
 
 ## Cursor, VS Code, others
 
@@ -84,4 +87,4 @@ Any client that supports remote HTTP MCP servers with OAuth works with the MCP U
 
 ## Revoking
 
-OAuth clients: https://backlinkgpt.com/app/settings/security. API keys: pause or delete at https://backlinkgpt.com/app/api/keys when an agent retires.
+OAuth clients and agents connected through auth.md: https://backlinkgpt.com/app/settings/security. API keys: pause or delete at https://backlinkgpt.com/app/api/keys when an agent retires.

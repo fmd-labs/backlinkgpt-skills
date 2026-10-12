@@ -1,6 +1,6 @@
 ---
 name: write-link-pitch
-description: Write the first outreach message and follow-ups for a backlink request, check them (claims, style, check_draft), and queue or send them with BacklinkGPT. Use when drafting a link pitch, an "add us to your list" email, a link insertion or resource page request, a nofollow-to-dofollow ask, a follow-up sequence, or as the writing step of a link-building routine. Research-led, short, plain text, one ask, no links in the first touch, no AI tells. With sending active it queues with start_outreach and followUpSteps; without it the user sends from their own mailbox and you log with record_manual_touch. While the workspace's write outreach stage is on, BacklinkGPT drafts its own outreach: use this skill when that stage is off, for an engagement you run (followUpMode agent), or when the user asks you to write one.
+description: Write the first outreach message and follow-ups for a backlink request, check them (claims, style, check_draft), and queue or send them with BacklinkGPT. Use when drafting a link pitch, an "add us to your list" email, a link insertion or resource page request, a nofollow-to-dofollow ask, a follow-up sequence, or as the writing step of a link-building routine. Research-led, short, plain text, one ask, no links in the first touch, no AI tells. With a sender connected it queues with start_outreach and followUpSteps; with none the user sends from their own mailbox and you log with record_manual_touch. While the workspace's write outreach stage is on, BacklinkGPT drafts its own outreach: use this skill when that stage is off, for an engagement you run (followUpMode agent), or when the user asks you to write one.
 ---
 
 # Write a link pitch
@@ -17,7 +17,7 @@ Email first. Email won 9 of every 10 links we got. Prospects contacted on Linked
 - Their page text: `read_page` (1 credit) or your own fetch, if the notes are thin or older than a few weeks. You may only state what the page shows. `check_draft` tests your claims against the read BacklinkGPT stored when it imported the page.
 - Your target page: the site profile and the page itself. Describe it only from what it shows.
 - The contact: `get_contact`. Are they the byline author? Is the first name a real name?
-- History with this person: earlier threads in `list_inbox` and `get_conversation_thread` (with sending active also `get_outreach_history`).
+- History with this person: earlier threads in `list_inbox` and `get_conversation_thread` (with a sender connected also `get_outreach_history`).
 - The brief: sender name and exact sign-off, voice samples, facts you may state, money rules.
 - Optional: the target page's Search Console queries (a Search Console tool if your tool list has one). Queries it already ranks for are good wording for the entry. Never quote the numbers.
 
@@ -94,7 +94,7 @@ Write them now, so they ship as one sequence on the same thread. A human reply s
 
 ## 5. Queue or send
 
-### With sending active: `start_outreach`
+### With a sender connected: `start_outreach`
 
 Pass `prospectUrl`, `targetPageUrl`, the contact (`contactId` from `add_contact`, or the email), `firstMessage` (channel email, subject, body, optional send time) and `followUpSteps` (each step a channel, a body, `delayDays` after the previous touch or after a LinkedIn acceptance, and for email whether it replies in the thread; the tool schema has the exact fields). Steps make the engagement yours (`followUps: "agent"`): BacklinkGPT sends each one as written when it comes due and never drafts for it. Add a `note` for referral context.
 
@@ -104,11 +104,11 @@ Pass `prospectUrl`, `targetPageUrl`, the contact (`contactId` from `add_contact`
 - A refusal is an answer, not an error: do-not-contact, competitor policy, already engaged, no sender, cap reached, steps that do not fit the touch gap or max touches, or copy that fails the check (`findings`). Read the note and move on.
 - Later changes: `set_follow_up_steps` to rewrite pending follow-ups (on an engagement you run), `add_touch` for one extra message, `reschedule_attempt`, `cancel_attempt`, `stop_engagement`. `send_attempt_now` skips the queue and needs the user's explicit yes. `get_engagement` shows the steps and what each became.
 
-### Without sending: send from the user's mailbox
+### No sender connected: send from the user's mailbox
 
 1. Create the draft in the user's mailbox if your mail connector can, or give them the text to paste. The user presses send.
 2. Once it is sent, log it with `record_manual_touch` (channel email, direction outbound, the contact's email, subject, body, when it was sent). The contact must be in memory first (`add_contact`). Logging keeps memory truthful and stops anyone pitching the same person twice.
-3. Without sending BacklinkGPT does not send follow-ups. Put the follow-up date in the brief's state and draft it in that day's run.
+3. Without a sender BacklinkGPT does not send follow-ups. Put the follow-up date in the brief's state and draft it in that day's run.
 
 ### LinkedIn (only without an email route)
 
