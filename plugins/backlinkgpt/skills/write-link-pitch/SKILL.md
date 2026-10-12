@@ -102,7 +102,7 @@ Pass `prospectUrl`, `targetPageUrl`, the contact (`contactId` from `add_contact`
 - Stay within the brief's daily limit of new conversations.
 - A first message to an ask-first competitor, to a site that already links to the user, or one whose copy the check flags waits in the review queue instead (`status: pending_review`, the reason in `note`); the user approves it in the inbox.
 - A refusal is an answer, not an error: do-not-contact, competitor policy, already engaged, no sender, cap reached, steps that do not fit the touch gap or max touches, or copy that fails the check (`findings`). Read the note and move on.
-- Later changes: `set_follow_up_steps` to rewrite pending follow-ups (on an engagement you run), `add_touch` for one extra message, `reschedule_attempt`, `cancel_attempt`, `stop_engagement`. `send_attempt_now` skips the queue and needs the user's explicit yes. `get_engagement` shows the steps and what each became.
+- Later changes: `set_follow_up_steps` to rewrite pending follow-ups (on an engagement you run), `add_touch` for one extra message, `reschedule_attempt`, `cancel_attempt`, `stop_engagement`. `send_attempt_now` skips the queue and needs the user's explicit yes. `get_engagement` shows the steps and what each became. A person can cancel a pending step in the app (`cancelReason: "cancelled_in_inbox"`): don't queue it again unless they ask.
 
 ### No sender connected: send from the user's mailbox
 
