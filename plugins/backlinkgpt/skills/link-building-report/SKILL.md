@@ -1,6 +1,6 @@
 ---
 name: link-building-report
-description: Write a weekly (or monthly) link-building report from BacklinkGPT data. Use when the user asks "how is link building going", "weekly report", "what did we win", "did our backlinks help rankings", "reply rate this month", or as the Monday job of a link-building routine. Pulls get_agent_status, get_outreach_kpis, get_source_breakdown, list_won_backlinks, check_backlink_live, deal and reply status, and Search Console and Bing movement for target pages when the user has it, then compares sources and sets next week's plan. Covers what BacklinkGPT's autopilot did and what the agent did, by stage.
+description: Write a weekly (or monthly) link-building report from BacklinkGPT data. Use when the user asks "how is link building going", "weekly report", "what did we win", "did our backlinks help rankings", "reply rate this month", or as the Monday job of a link-building routine. Pulls get_agent_status, get_outreach_kpis, get_source_breakdown, list_backlinks, get_authority_growth, check_backlink_live, deal and reply status, and Search Console and Bing movement for target pages when the user has it, then compares sources and sets next week's plan. Covers what BacklinkGPT's autopilot did and what the agent did, by stage.
 ---
 
 # Link-building report
@@ -15,7 +15,8 @@ Reading your own data costs no credits.
 
 - `get_agent_status`: the autopilot stages (who did what this week), credits left this period, the prospect pool, links won.
 - `get_outreach_kpis` twice, once per window: messages sent, prospects contacted, replies, reply rate, bounces, engagements started, links won. LinkedIn adds invites sent and accepted; quote the accept rate as given.
-- `list_won_backlinks`: links won in the window, plus all live links for the totals (DR, dofollow share, target page, price where recorded).
+- `list_backlinks` with `view: "won"` and `sinceDays`: links won in the window; with `view: "won"` alone, every won link for the totals (DR, dofollow share, target page, price where recorded). Without a view it is the whole backlink profile, links the crawler found included.
+- `get_authority_growth`: domain rating, referring domains and organic traffic over the window, with the days won links went live.
 - `check_backlink_live` on links won in the window and on links not checked in the last 30 days. Report each as live, lost, or unreachable. Unreachable means the page could not be read (blocked); it is not a lost link.
 - `get_source_breakdown`: which sourcing channels BacklinkGPT's own hunt kept, contacted and won from.
 - `list_inbox` with the `inbox` view: anything still unanswered, with how long it has waited.
