@@ -22,7 +22,8 @@ Reading your own data costs no credits.
 - `list_inbox` with the `inbox` view: anything still unanswered, with how long it has waited.
 - Deals: the threads that moved this week and their stage (negotiating, agreed, invoice received, paid, awaiting placement, live), from the routine's notes and `get_conversation_thread`.
 - With a sender connected: `list_engagements` for live sequences, and `get_outreach_history` for what went out.
-- Search Console and Bing, when your tool list has tools for them or the user shares an export: clicks, impressions and average position for the target pages in both windows, and their top queries. Without either, leave the Search section out and say why.
+- Search Console and Bing, from the tools below (or an export the user shares when they aren't connected). Without either, leave the Search section out and say why.
+- The Search Console and Bing tools (free). Only the site as a whole compares two windows: `get_search_console_overview` and `get_bing_overview` with `days` set to the window return it and the window before (the default window ends on the last day Search Console has finalized, `finalThrough`, or on Bing's newest stored day, since both run a few days behind; a Search Console site without recent impressions reads zeros, not an old busy period, and when the Bing overview has a `note`, pass it on: Bing has reported nothing for weeks). Pages come as their current numbers only: `list_search_console_pages` with `pageUrl` per target page (the stored last 28 days) and `list_bing_pages`. `list_search_console_queries` and `list_bing_queries` are the site's queries, not split by page: never present them as a target page's queries or a page's trend. The one per-page before and after is `get_link_impact`, for what each won link did to its target page. Quote its `reading` as given: `measured` and `baseline_clipped` (a shorter baseline that won't fill in) are settled, `partial` will still move, and `low_volume`, `not_enough_data`, `no_search_data`, `before_history`, `not_tracked` and `too_early` are not results. Not connected: they say so in `connection.message` or `note`; pass it on.
 - The brief's state: which source each prospect came from, credits spent per run.
 
 ## 2. Read the numbers honestly
@@ -53,7 +54,9 @@ Group the prospects contacted in the last 30 days by their source (`ai_citation`
 - Deals: <n> negotiating, <n> agreed, <n> awaiting placement, <n> paid and not live
 
 ## Search
-| Target page | Clicks (vs prev) | Impressions | Avg position | Links won (all time) |
+Site: <clicks> clicks (<vs prev>), <impressions> impressions, average position <position>, <dates> (Search Console); Bing <clicks> clicks (<vs prev>).
+
+| Target page | Clicks, last 28 days | Impressions | Avg position | Links won (all time) | Link impact (reading) |
 | ... |
 <one sentence on what moved, with the lag caveat when relevant>
 

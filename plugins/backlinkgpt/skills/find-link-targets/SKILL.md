@@ -87,7 +87,7 @@ The warmest pages: they already know the user. Win odds are about 1.6 times a co
 
 ## Strategy F: Search Console seeds
 
-The target pages' Search Console queries (a Search Console tool if your tool list has one, or an export from the user): queries in positions 5 to 20 with real impressions are what the user almost ranks for. Use them as seeds for strategies C and D. Drop brand, navigational and off-topic queries (anything the site profile's "what it is not" covers).
+The target pages' Search Console queries (`list_search_console_queries`, free: the site's top queries over the last 28 days, not split by page, so match them to target pages by topic; or an export from the user when Search Console isn't connected): queries in positions 5 to 20 with real impressions are what the user almost ranks for. Use them as seeds for strategies C and D. Drop brand, navigational and off-topic queries (anything the site profile's "what it is not" covers).
 
 ## Dedupe before you spend
 

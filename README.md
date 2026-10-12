@@ -6,7 +6,7 @@ BacklinkGPT runs link building in four autopilot stages: **find sites**, **judge
 
 - **Memory.** Every prospect, verdict, contact, message and deal, so nothing is pitched twice.
 - **SEO data tools.** Domain rating and traffic, competitor link intersection, SERP reads, page reads, email finding and verification. Metered in credits. Without credits your agent brings its own SEO data, and the skills tell it how.
-- **Search Console and Bing.** Connected in the app, they steer BacklinkGPT's own target pages and sourcing. They are not agent tools yet: your agent works from an export the user shares, or its own Search Console connection.
+- **Search Console and Bing.** Connected in the app, they steer BacklinkGPT's own target pages and sourcing, and your agent reads the synced data too: query and page data for your site, and the movement on pages that won links (`get_search_console_overview`, `list_search_console_queries`, `list_search_console_pages`, `get_link_impact`, `get_bing_overview`, `list_bing_queries`, `list_bing_pages`). Read-only and free.
 - **Sending with safety rails.** Your agent queues a first message and its follow-up steps; BacklinkGPT sends each one as written from your Gmail, Outlook or IMAP inbox inside your send window, with caps, pacing, suppression lists and dead-page checks.
 - **Draft checks.** `check_draft` runs your agent's copy through the checks the send queue applies, before anything is queued. Free.
 - **Reply detection.** Any human reply stops the sequence and fires an event.
@@ -23,7 +23,7 @@ For the stages your agent takes over, the quality of the pitches and the deals i
 | [`judge-link-targets`](plugins/backlinkgpt/skills/judge-link-targets/SKILL.md) | The page verdict rubric (gates, spam, language, duplicates, value x win odds) and contact choice. |
 | [`write-link-pitch`](plugins/backlinkgpt/skills/write-link-pitch/SKILL.md) | Research-led first message and follow-ups, claim and style checks, `check_draft`, then queue or send. |
 | [`handle-link-replies`](plugins/backlinkgpt/skills/handle-link-replies/SKILL.md) | Same-day replies, the fair price table and money rules, deal stages, verifying the live link. |
-| [`link-building-report`](plugins/backlinkgpt/skills/link-building-report/SKILL.md) | Weekly report: outreach KPIs, won and lost links, deals, and Search Console and Bing movement on target pages when the user shares the numbers. |
+| [`link-building-report`](plugins/backlinkgpt/skills/link-building-report/SKILL.md) | Weekly report: outreach KPIs, won and lost links, deals, and Search Console and Bing movement on target pages and won links. |
 
 Workspaces on a paid plan also get deeper playbooks served by the MCP server itself (`list_skills`, `get_skill`): AI-citation sourcing, a competitor gap deep dive, link negotiation and an end-to-end outreach routine. They are always the latest version.
 
@@ -139,7 +139,7 @@ One connection or key is bound to one workspace. One workspace is one site.
 
 ## Plans and credits
 
-Every MCP and REST call needs a workspace with an active plan, whatever the credential: without one the MCP tools answer `FORBIDDEN` and the REST API `402`, and nothing is charged. The MCP server and the REST API are on every plan, and so are memory, contact policies, events, webhooks, `check_draft`, logging messages you sent elsewhere (`record_manual_touch`), the SEO data tools (metered in credits) and the premium skills. BacklinkGPT sends once a sender (Gmail, Outlook, IMAP or LinkedIn) is connected in the app; without one, your agent drafts and the user sends. Search Console and Bing are connected in the app and used by BacklinkGPT itself; they are not agent tools yet. The public skills are free to read and install. Plans and prices are at [backlinkgpt.com/pricing](https://backlinkgpt.com/pricing).
+Every MCP and REST call needs a workspace with an active plan, whatever the credential: without one the MCP tools answer `FORBIDDEN` and the REST API `402`, and nothing is charged. The MCP server and the REST API are on every plan, and so are memory, contact policies, events, webhooks, `check_draft`, logging messages you sent elsewhere (`record_manual_touch`), the SEO data tools (metered in credits) and the premium skills. BacklinkGPT sends once a sender (Gmail, Outlook, IMAP or LinkedIn) is connected in the app; without one, your agent drafts and the user sends. Search Console and Bing are connected in the app; BacklinkGPT steers by them, and your agent reads their synced data with the Search Console and Bing tools. The public skills are free to read and install. Plans and prices are at [backlinkgpt.com/pricing](https://backlinkgpt.com/pricing).
 
 These tools use credits:
 
@@ -155,7 +155,7 @@ These tools use credits:
 | `scan_competitor_gap` | 25 per 1,000 pages the scan returns (nothing if it finds none), plus up to 3 per page it evaluates; the quote, 100 by default, is the most it can cost |
 | `trigger_sourcing_run` | what the run's search reads and page verdicts cost (admins only) |
 
-Reading and writing your own data, `check_draft`, events and sending are not metered. On MCP a credit tool first returns a quote and spends nothing; the agent calls it again with `confirm: true`. Without credits the data tools are refused and nothing is charged: the skills fall back to your agent's own web search, page fetch and SEO data (an Ahrefs or Semrush MCP server, open-seo, an export).
+Reading and writing your own data (Search Console and Bing included), `check_draft`, events and sending are not metered. On MCP a credit tool first returns a quote and spends nothing; the agent calls it again with `confirm: true`. Without credits the data tools are refused and nothing is charged: the skills fall back to your agent's own web search, page fetch and SEO data (an Ahrefs or Semrush MCP server, open-seo, an export).
 
 ## Auth and security
 
