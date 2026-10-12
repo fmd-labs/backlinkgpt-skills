@@ -10,7 +10,7 @@ BacklinkGPT runs link building in four autopilot stages: **find sites**, **judge
 - **Sending with safety rails.** Your agent queues a first message and its follow-up steps; BacklinkGPT sends each one as written from your Gmail, Outlook or IMAP inbox inside your send window, with caps, pacing, suppression lists and dead-page checks.
 - **Draft checks.** `check_draft` runs your agent's copy through the checks the send queue applies, before anything is queued. Free.
 - **Reply detection.** Any human reply stops the sequence and fires an event.
-- **Events and webhooks.** Your agent polls `list_events` or subscribes its own endpoint to signed webhooks (`create_event_subscription`).
+- **Events and webhooks.** Your agent polls `list_events` or subscribes its own endpoint to signed webhooks (`create_event_subscription`, then `update_event_subscription` to change, pause, test or redeliver them).
 
 For the stages your agent takes over, the quality of the pitches and the deals is the quality of your agent's model and these skills.
 

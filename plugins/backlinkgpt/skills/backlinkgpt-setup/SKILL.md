@@ -39,6 +39,8 @@ Switch the stages the user names with `set_autopilot_stages`, and write the spli
 
 The user connects both in the app at https://backlinkgpt.com/app/connected-accounts. Both are free and both matter: they show which pages are close to ranking (where links help most) and later whether won links moved anything. BacklinkGPT reads them itself. When your tool list has Search Console or Bing tools, use them in sourcing and in the report; otherwise ask the user for an export when you need the numbers.
 
+The app picks the property that matches the site on its own. When the connected account holds several (a domain property and a URL-prefix one, or a www and a non-www site), `set_search_property` picks one; its refusal lists the ones it can read (`availableSites`). Switching to a different property deletes the history stored for the old one, so ask the user first, and never switch an established property just to tidy up.
+
 ## 4. Site profile
 
 `refresh_site_positioning` reads the homepage and writes BacklinkGPT's own profile; or read the homepage and two or three main pages yourself (your own web fetch, or `read_page`, credits, 1 per page) and write it with `update_site_positioning`:
@@ -98,7 +100,7 @@ Store it where the routine will find it: a file in the project for Claude Code o
 
 Check `list_senders`. Senders (Gmail, Outlook or IMAP inboxes, and LinkedIn accounts) are connected by the user in the app at https://backlinkgpt.com/app/connected-accounts.
 
-- **With a sender connected**: read `get_cadence_policy` and set the send window and daily caps with `update_cadence_policy`. A new or rarely used mailbox ramps up: see `set_sender_warmup`.
+- **With a sender connected**: read `get_cadence_policy` and set the send window and daily caps with `update_cadence_policy`. A new or rarely used mailbox ramps up: see `set_sender_warmup`. With several senders, `update_sender` makes one the default for its channel. It also sets the name prospects see (`displayName`) and, when the user sends from an alias such as hello@ their domain, the send-as address: the first call sends a real test email from the alias to itself, and a second call about 10 seconds later saves it once the test arrived as the alias. A From address on another domain restarts the email warm-up, so say so before switching.
 - **No sender connected**: BacklinkGPT cannot send. The routine drafts, the user (or your mail connector, with their yes) sends from their own mailbox, and you log each message with `record_manual_touch`. Connecting a sender later switches the routine to queueing.
 
 ## 11. Events
@@ -106,7 +108,7 @@ Check `list_senders`. Senders (Gmail, Outlook or IMAP inboxes, and LinkedIn acco
 Pick how the routine learns what happened:
 
 - **Polling** (works everywhere): `list_events` with the cursor saved from the last run. Keep the cursor in the brief or the routine's state file.
-- **Webhooks** (needs a public HTTPS endpoint): `create_event_subscription` with the URL and event types, for example `engagement.reply_received` to wake a reply check. Verify the signatures. `list_event_subscriptions` and `delete_event_subscription` manage them.
+- **Webhooks** (needs a public HTTPS endpoint): `create_event_subscription` with the URL and event types, for example `engagement.reply_received` to wake a reply check. Verify the signatures. `list_event_subscriptions`, `update_event_subscription` (change event types or filters, pause or resume, `send_test` to check your receiver, `redeliver_failed` after your endpoint was down) and `delete_event_subscription` manage them.
 
 Replies decide links. Answers that slipped from same day to two days cost real links in our own campaigns, so the reply check runs at least twice per working day, or on the webhook.
 
